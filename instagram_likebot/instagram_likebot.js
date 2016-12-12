@@ -60,6 +60,8 @@ function getLastPics() {
         browser.sleep(settings.sleep_delay);
 
         browser.findElements(by.css(cssSelector.pics)).then(function (elements) {
+            var existFiles = fs.readdirSync('./pics');
+
             var urls = elements.map(function (e) {
                 return e.getAttribute('src');
             });
@@ -69,9 +71,13 @@ function getLastPics() {
                 for (var i = 0; i < allUrls.length; i++) {
                     var fileName = /com.*\/(.*\.jpg)/i.exec(allUrls[i])[1];
                     (function (url, fileName) {
-                        download(url, './pics/' + fileName, function () {
-                            console.log('done ' + fileName);
-                        });
+                        if (existFiles.indexOf(fileName) === -1) {
+                            download(url, './pics/' + fileName, function () {
+                                logger.info('done ' + fileName);
+                            });
+                        } else {
+                            logger.warn('skipping ' + fileName);
+                        }
                     })(allUrls[i], fileName);
                 }
                 // browser.close();
