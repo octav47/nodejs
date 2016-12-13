@@ -40,7 +40,7 @@ setInterval(function () {
     browser.sleep(settings.sleep_delay).then(function () {
         downloadByNickname(0);
     });
-}, 120000);
+}, 60000);
 
 function downloadByNickname(indexNickname) {
     browser.get('https://instagram.com/' + settings.instagram_accounts_to_be_liked[indexNickname]);
@@ -56,7 +56,7 @@ function download(uri, filename, callback) {
 
 function getLastPics() {
     browser.getCurrentUrl().then(function (url) {
-        logger.debug('Current url:   ' + url);
+        // logger.debug('Current url:   ' + url);
         browser.sleep(settings.sleep_delay);
 
         browser.findElements(by.css(cssSelector.pics)).then(function (elements) {
@@ -67,7 +67,7 @@ function getLastPics() {
             });
 
             Promise.all(urls).then(function (allUrls) {
-                logger.info('Started downloading');
+                logger.info('Checking for new pics...');
                 for (var i = 0; i < allUrls.length; i++) {
                     var fileName = /com.*\/(.*\.jpg)/i.exec(allUrls[i])[1];
                     (function (url, fileName) {
@@ -76,7 +76,7 @@ function getLastPics() {
                                 logger.info('done ' + fileName);
                             });
                         } else {
-                            logger.warn('skipping ' + fileName);
+                            // logger.warn('skipping ' + fileName);
                         }
                     })(allUrls[i], fileName);
                 }
