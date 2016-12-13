@@ -4,6 +4,7 @@
 //               edit user-specific variables in settings.json
 //               node instagram_likebot.js
 //
+var phantomjs = require('phantomjs');
 var webdriver = require('selenium-webdriver');
 var by = webdriver.By;
 var Promise = require('promise');
@@ -27,7 +28,7 @@ var cssSelector = {
 
 var browser = new webdriver
     .Builder()
-    .withCapabilities(webdriver.Capabilities.chrome())
+    .withCapabilities(webdriver.Capabilities.phantomjs())
     .build();
 
 browser.manage().window().setSize(1024, 100);
